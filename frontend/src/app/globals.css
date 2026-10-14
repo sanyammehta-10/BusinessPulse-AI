@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  /* ─── Premium Dark SaaS Design System (BusinessPulse AI) ─── */
+  --background: #080B12;
+  --background-secondary: #0D111B;
+  --surface: #111827;
+  --surface-elevated: #151D2B;
+  --border: #253044;
+  --border-light: rgba(37, 48, 68, 0.5);
+  --border-focus: rgba(53, 201, 245, 0.4);
+  --text-primary: #F5F7FB;
+  --text-secondary: #A1AABD;
+  --text-muted: #6F7B90;
+  --accent-primary: #35C9F5;
+  --accent-secondary: #4D8DFF;
+  --success: #36D399;
+  --warning: #F6BD60;
+  --danger: #FB7185;
+
+  /* ─── Aliases & UI Geometry ─────────────────────── */
+  --primary: var(--accent-primary);
+  --primary-light: #5EDBFF;
+  --primary-dark: #1E9FD0;
+  --card: var(--surface);
+  --card-elevated: var(--surface-elevated);
+
+  /* ─── Shadows ──────────────────────────────────── */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 6px 14px -2px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 16px 32px -4px rgba(0, 0, 0, 0.7);
+  --shadow-xl: 0 24px 48px -6px rgba(0, 0, 0, 0.85);
+
+  /* ─── Radius ───────────────────────────────────── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* ─── Smooth Transitions ───────────────────────── */
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
+  --color-foreground: var(--text-primary);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border: var(--border);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ─── Base Styles ────────────────────────────────── */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── Scrollbar Styling ──────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ─── Focus States ───────────────────────────────── */
+
+*:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Selection ──────────────────────────────────── */
+
+::selection {
+  background: rgba(53, 201, 245, 0.25);
+  color: #FFFFFF;
+}
+
+/* ─── Tabular Numbers for Financial Metrics ──────── */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Section Anchor Offset (Avoid sticky navbar overlap) ─── */
+[id] {
+  scroll-margin-top: 100px;
+}
+
+/* ─── Subtle Radar Keyframes ─────────────────────── */
+@keyframes radar-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-radar-spin {
+  animation: radar-spin 12s linear infinite;
+}
+
+/* ─── Clean Card Utility ─────────────────────────── */
+.saas-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.saas-card:hover {
+  border-color: rgba(53, 201, 245, 0.35);
+  box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.7);
+}
+
+/* ─── Primary CTA Button ─────────────────────────── */
+.saas-btn-primary {
+  background-color: var(--accent-primary);
+  color: #080B12;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.saas-btn-primary:hover {
+  background-color: #5EDBFF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(53, 201, 245, 0.35);
+}
+
+.saas-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ─── Secondary CTA Button ───────────────────────── */
+.saas-btn-secondary {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.saas-btn-secondary:hover {
+  background-color: var(--surface-elevated);
+  border-color: rgba(53, 201, 245, 0.4);
+  color: #FFFFFF;
+}

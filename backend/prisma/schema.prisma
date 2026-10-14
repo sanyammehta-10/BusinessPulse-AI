@@ -1,0 +1,442 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── ENUMS ────────────────────────────────────────
+
+enum UserRole {
+  OWNER
+  MANAGER
+  ACCOUNTANT
+  VIEWER
+}
+
+enum BusinessSize {
+  MICRO
+  SMALL
+  MEDIUM
+}
+
+enum OtpType {
+  LOGIN
+  VERIFY_EMAIL
+  VERIFY_PHONE
+  RESET_PASSWORD
+}
+
+enum ImportStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum DecisionType {
+  HIRING
+  NEW_STORE
+  PRICE_CHANGE
+  MARKETING
+  NEW_PRODUCT
+  CLOSE_BRANCH
+  REDUCE_STAFF
+  NEW_CITY
+}
+
+enum DecisionStatus {
+  DRAFT
+  ANALYZING
+  COMPLETED
+  ARCHIVED
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ScenarioType {
+  BEST_CASE
+  EXPECTED_CASE
+  WORST_CASE
+}
+
+enum PredictionType {
+  SALES
+  PROFIT
+  GROWTH
+  CASHFLOW
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum Severity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+// ─── AUTH & USERS ─────────────────────────────────
+
+model User {
+  id            String   @id @default(cuid())
+  email         String?  @unique
+  phone         String?  @unique
+  passwordHash  String?
+  emailVerified Boolean  @default(false)
+  phoneVerified Boolean  @default(false)
+  name          String
+  avatar        String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  memberships BusinessMember[]
+  sessions    Session[]
+  otpCodes    OtpCode[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@map("sessions")
+}
+
+model OtpCode {
+  id        String   @id @default(cuid())
+  userId    String?
+  phone     String?
+  email     String?
+  code      String
+  type      OtpType
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([phone, type])
+  @@index([email, type])
+  @@map("otp_codes")
+}
+
+// ─── BUSINESS ─────────────────────────────────────
+
+model Business {
+  id                 String       @id @default(cuid())
+  name               String
+  industry           String
+  businessType       String
+  businessSize       BusinessSize @default(SMALL)
+  employeeCount      Int          @default(0)
+  branchCount        Int          @default(0)
+  currency           String       @default("INR")
+  financialYearStart Int          @default(4)
+  onboardingComplete Boolean      @default(false)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  members         BusinessMember[]
+  locations       Location[]
+  products        Product[]
+  employees       Employee[]
+  sales           Sale[]
+  expenses        Expense[]
+  decisions       Decision[]
+  predictions     Prediction[]
+  recommendations Recommendation[]
+  alerts          Alert[]
+  reports         Report[]
+  dataImports     DataImport[]
+
+  @@map("businesses")
+}
+
+model BusinessMember {
+  id         String   @id @default(cuid())
+  userId     String
+  businessId String
+  role       UserRole @default(VIEWER)
+  joinedAt   DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, businessId])
+  @@index([businessId])
+  @@map("business_members")
+}
+
+// ─── BUSINESS DATA ────────────────────────────────
+
+model Location {
+  id         String   @id @default(cuid())
+  businessId String
+  name       String
+  city       String
+  state      String?
+  country    String   @default("India")
+  type       String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  business  Business   @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  sales     Sale[]
+  expenses  Expense[]
+  employees Employee[]
+
+  @@index([businessId])
+  @@map("locations")
+}
+
+model Product {
+  id           String   @id @default(cuid())
+  businessId   String
+  name         String
+  category     String?
+  costPrice    Decimal  @db.Decimal(12, 2)
+  sellingPrice Decimal  @db.Decimal(12, 2)
+  stockQty     Int      @default(0)
+  unit         String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  sales    Sale[]
+
+  @@index([businessId])
+  @@index([businessId, category])
+  @@map("products")
+}
+
+model Employee {
+  id          String   @id @default(cuid())
+  businessId  String
+  locationId  String?
+  name        String
+  department  String
+  designation String?
+  salary      Decimal  @db.Decimal(12, 2)
+  joiningDate DateTime
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  business Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  location Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+
+  @@index([businessId])
+  @@index([businessId, department])
+  @@map("employees")
+}
+
+model Sale {
+  id               String   @id @default(cuid())
+  businessId       String
+  productId        String?
+  locationId       String?
+  date             DateTime
+  quantity         Decimal  @db.Decimal(12, 2)
+  unitPrice        Decimal  @db.Decimal(12, 2)
+  totalAmount      Decimal  @db.Decimal(14, 2)
+  customerCategory String?
+  createdAt        DateTime @default(now())
+
+  business Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  product  Product?  @relation(fields: [productId], references: [id], onDelete: SetNull)
+  location Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+
+  @@index([businessId, date])
+  @@index([businessId, productId])
+  @@index([businessId, locationId])
+  @@map("sales")
+}
+
+model Expense {
+  id         String   @id @default(cuid())
+  businessId String
+  locationId String?
+  category   String
+  amount     Decimal  @db.Decimal(14, 2)
+  date       DateTime
+  notes      String?
+  createdAt  DateTime @default(now())
+
+  business Business  @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  location Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+
+  @@index([businessId, date])
+  @@index([businessId, category])
+  @@map("expenses")
+}
+
+model DataImport {
+  id          String       @id @default(cuid())
+  businessId  String
+  fileName    String
+  fileType    String
+  dataType    String
+  status      ImportStatus @default(PENDING)
+  rowCount    Int?
+  errorCount  Int?
+  errorLog    Json?
+  createdAt   DateTime     @default(now())
+  completedAt DateTime?
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+  @@map("data_imports")
+}
+
+// ─── DECISIONS & SIMULATIONS ──────────────────────
+
+model Decision {
+  id          String         @id @default(cuid())
+  businessId  String
+  title       String
+  description String?
+  type        DecisionType
+  parameters  Json
+  status      DecisionStatus @default(DRAFT)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  business   Business    @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  simulation Simulation?
+  scenarios  Scenario[]
+
+  @@index([businessId])
+  @@index([businessId, type])
+  @@map("decisions")
+}
+
+model Simulation {
+  id               String    @id @default(cuid())
+  decisionId       String    @unique
+  salesImpact      Json
+  expenseImpact    Json
+  profitImpact     Json
+  revenueImpact    Json
+  breakEvenMonths  Int?
+  riskScore        Int
+  riskLevel        RiskLevel
+  riskFactors      Json
+  aiRecommendation String?   @db.Text
+  aiExplanation    String?   @db.Text
+  confidence       Decimal?  @db.Decimal(5, 2)
+  createdAt        DateTime  @default(now())
+
+  decision Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+
+  @@map("simulations")
+}
+
+model Scenario {
+  id            String       @id @default(cuid())
+  decisionId    String
+  type          ScenarioType
+  salesGrowth   Decimal      @db.Decimal(8, 2)
+  expenseGrowth Decimal      @db.Decimal(8, 2)
+  profitGrowth  Decimal      @db.Decimal(8, 2)
+  revenueChange Decimal?     @db.Decimal(8, 2)
+  assumptions   Json?
+  probability   Decimal?     @db.Decimal(5, 2)
+
+  decision Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+
+  @@index([decisionId])
+  @@map("scenarios")
+}
+
+// ─── PREDICTIONS & INSIGHTS ──────────────────────
+
+model Prediction {
+  id             String         @id @default(cuid())
+  businessId     String
+  type           PredictionType
+  period         String
+  predictedValue Decimal        @db.Decimal(14, 2)
+  confidence     Decimal        @db.Decimal(5, 2)
+  modelUsed      String?
+  metadata       Json?
+  createdAt      DateTime       @default(now())
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId, type])
+  @@map("predictions")
+}
+
+model Recommendation {
+  id          String   @id @default(cuid())
+  businessId  String
+  category    String
+  title       String
+  description String   @db.Text
+  priority    Priority @default(MEDIUM)
+  isRead      Boolean  @default(false)
+  isDismissed Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+  @@map("recommendations")
+}
+
+model Alert {
+  id         String   @id @default(cuid())
+  businessId String
+  type       String
+  title      String
+  message    String   @db.Text
+  severity   Severity @default(INFO)
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+  @@index([businessId, isRead])
+  @@map("alerts")
+}
+
+model Report {
+  id         String   @id @default(cuid())
+  businessId String
+  type       String
+  title      String
+  period     String?
+  fileUrl    String?
+  status     String   @default("PENDING")
+  createdAt  DateTime @default(now())
+
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@index([businessId])
+  @@map("reports")
+}

@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pandas
+prophet
+pydantic
+python-dotenv
+scikit-learn
+statsmodels
+psycopg2-binary

@@ -1,0 +1,20 @@
+import { Request, Response, NextFunction } from 'express';
+import { ZodSchema } from 'zod';
+import { BadRequestError } from '../utils/errors.js';
+
+type ValidationTarget = 'body' | 'query' | 'params';
+
+export function validate(schema: ZodSchema, target: ValidationTarget = 'body') {
+  return (req: Request, _res: Response, next: NextFunction) => {
+    const result = schema.safeParse(req[target]);
+
+    if (!result.success) {
+      next(result.error);
+      return;
+    }
+
+    // Replace with parsed & coerced data
+    (req as any)[target] = result.data;
+    next();
+  };
+}
