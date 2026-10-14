@@ -19,6 +19,17 @@
   --warning: #F6BD60;
   --danger: #FB7185;
 
+  /* ─── Spacing Scale (4, 8, 12, 16, 24, 32, 48, 64, 96) ─── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
   /* ─── Aliases & UI Geometry ─────────────────────── */
   --primary: var(--accent-primary);
   --primary-light: #5EDBFF;
@@ -63,27 +74,42 @@
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* ─── Base Styles ────────────────────────────────── */
+/* ─── Global Reset & System Base ─────────────────── */
 
-* {
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-html {
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--background);
-  color: var(--text-primary);
-  line-height: 1.6;
-  min-height: 100vh;
-  overflow-x: hidden;
+/* ─── The Single Shared Global Layout Container ──── */
+.site-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 32px);
+}
+
+/* ─── Full-Width Section Wrapper with Consistent Vertical Padding ─── */
+.section-wrapper {
+  width: 100%;
+  padding-block: clamp(64px, 8vw, 112px);
+  border-top: 1px solid var(--border);
 }
 
 /* ─── Scrollbar Styling ──────────────────────────── */
@@ -128,7 +154,7 @@ body {
 
 /* ─── Section Anchor Offset (Avoid sticky navbar overlap) ─── */
 [id] {
-  scroll-margin-top: 100px;
+  scroll-margin-top: 80px;
 }
 
 /* ─── Subtle Radar Keyframes ─────────────────────── */
@@ -146,6 +172,7 @@ body {
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
+  padding: 24px;
   transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
 }
 
@@ -154,11 +181,19 @@ body {
   box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.7);
 }
 
-/* ─── Primary CTA Button ─────────────────────────── */
+/* ─── Standard Buttons ───────────────────────────── */
 .saas-btn-primary {
+  min-height: 44px;
+  padding-inline: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--accent-primary);
   color: #080B12;
   font-weight: 600;
+  font-size: 14px;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
   transition: all var(--transition-fast);
 }
 
@@ -172,12 +207,19 @@ body {
   transform: translateY(0);
 }
 
-/* ─── Secondary CTA Button ───────────────────────── */
 .saas-btn-secondary {
+  min-height: 44px;
+  padding-inline: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--surface);
   border: 1px solid var(--border);
   color: var(--text-primary);
   font-weight: 500;
+  font-size: 14px;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
   transition: all var(--transition-fast);
 }
 
