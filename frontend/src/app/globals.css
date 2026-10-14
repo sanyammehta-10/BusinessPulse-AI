@@ -3,18 +3,18 @@
 
 :root {
   /* ─── BusinessPulse AI Design Tokens ─── */
-  --background: #080B12;
-  --background-secondary: #0D111B;
-  --surface-panel: #0E131F;
+  --background: #030712;
+  --background-secondary: #070D18;
+  --surface-panel: #0A101D;
   --hairline: rgba(255, 255, 255, 0.08);
   --hairline-hover: rgba(255, 255, 255, 0.16);
 
   --text-primary: #F5F7FB;
-  --text-secondary: #A1AABD;
-  --text-muted: #6F7B90;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
 
-  --accent-primary: #35C9F5;
-  --accent-hover: #5EDBFF;
+  --accent-primary: #00D2FE;
+  --accent-hover: #38E1FF;
   
   --success: #34D399;
   --warning: #FBBF24;

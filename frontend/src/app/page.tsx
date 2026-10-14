@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Zap,
@@ -21,47 +22,19 @@ import {
   Users,
   Database,
   ExternalLink,
+  Home,
+  BarChart2,
+  Package,
+  Search,
+  Bell,
+  Calendar,
+  ChevronDown,
+  Coins,
+  HeartPulse,
 } from 'lucide-react';
-import {
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-} from 'recharts';
-
-// Mock telemetry data for the hero preview
-const activityDataWeekly = [
-  { name: 'Mon', tasks: 160 },
-  { name: 'Tue', tasks: 240 },
-  { name: 'Wed', tasks: 380 },
-  { name: 'Thu', tasks: 310 },
-  { name: 'Fri', tasks: 520 },
-  { name: 'Sat', tasks: 420 },
-  { name: 'Sun', tasks: 590 },
-];
-
-const activityDataDaily = [
-  { name: '00:00', tasks: 45 },
-  { name: '04:00', tasks: 30 },
-  { name: '08:00', tasks: 120 },
-  { name: '12:00', tasks: 260 },
-  { name: '16:00', tasks: 340 },
-  { name: '20:00', tasks: 210 },
-  { name: '23:59', tasks: 150 },
-];
-
-const activityDataMonthly = [
-  { name: 'W1', tasks: 1250 },
-  { name: 'W2', tasks: 1980 },
-  { name: 'W3', tasks: 2450 },
-  { name: 'W4', tasks: 3100 },
-];
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activityRange, setActivityRange] = useState<'Daily' | 'Weekly' | 'Monthly'>('Weekly');
   const [selectedScenario, setSelectedScenario] = useState<'hire' | 'pricing' | 'marketing'>('hire');
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
 
@@ -115,74 +88,80 @@ export default function LandingPage() {
     },
   ];
 
-  const currentChartData =
-    activityRange === 'Daily'
-      ? activityDataDaily
-      : activityRange === 'Weekly'
-      ? activityDataWeekly
-      : activityDataMonthly;
-
   return (
-    <div className="min-h-screen bg-[#080B12] text-[#F5F7FB] selection:bg-[#35C9F5]/25 selection:text-white font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-[#030712] text-[#F5F7FB] selection:bg-[#00D2FE]/25 selection:text-white font-sans antialiased overflow-x-hidden relative">
       
-      {/* ─── 1. NAVBAR (Sticky, 72px, 3 Zones) ────────────────────────── */}
-      <header className="sticky top-0 z-50 w-full h-[72px] bg-[#080B12]/85 backdrop-blur-md border-b border-white/[0.08]">
+      {/* ─── AMBIENT CYAN ATMOSPHERIC GLOWS ──────────────────────────── */}
+      {/* Left nebula glow */}
+      <div className="absolute top-[80px] left-[-18%] w-[620px] h-[620px] bg-[#00D2FE]/18 blur-[150px] rounded-full pointer-events-none -z-10" />
+      {/* Right nebula glow */}
+      <div className="absolute top-[80px] right-[-18%] w-[620px] h-[620px] bg-[#00D2FE]/18 blur-[150px] rounded-full pointer-events-none -z-10" />
+      {/* Central glow behind hero dashboard */}
+      <div className="absolute top-[380px] left-1/2 -translate-x-1/2 w-[85%] max-w-[950px] h-[400px] bg-[#00D2FE]/20 blur-[130px] rounded-full pointer-events-none -z-10" />
+
+      {/* ─── 1. NAVBAR (Sticky, Brand Logo, Centered Links, Watch Demo CTA) ── */}
+      <header className="sticky top-0 z-50 w-full h-[76px] bg-[#030712]/80 backdrop-blur-md">
         <div className="site-container h-full flex items-center justify-between">
           
-          {/* Zone 1: Logo (Left, Plain Icon, No Box) */}
+          {/* Logo: 4 Cyan Vertical Bars + BusinessPulseAI */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <Zap className="w-5 h-5 text-[#35C9F5]" />
-            <span className="text-base font-bold tracking-tight text-[#F5F7FB] group-hover:text-[#35C9F5] transition-colors">
-              Business<span className="text-[#35C9F5]">Pulse</span> <span className="text-xs font-mono font-medium text-[#A1AABD]">AI</span>
+            <div className="flex items-end gap-[3px] h-5">
+              <span className="w-1 h-2 rounded-[1px] bg-[#00D2FE]" />
+              <span className="w-1 h-3 rounded-[1px] bg-[#00D2FE]" />
+              <span className="w-1 h-4 rounded-[1px] bg-[#00D2FE]" />
+              <span className="w-1 h-5 rounded-[1px] bg-[#00D2FE]" />
+            </div>
+            <span className="text-[17px] font-bold tracking-tight text-white group-hover:opacity-90 transition-opacity">
+              Business<span className="text-[#00D2FE]">PulseAI</span>
             </span>
           </Link>
 
-          {/* Zone 2: Navigation Links (Centered, 32px Gaps) */}
+          {/* Centered Navigation Links with 'Home' active indicator */}
           <nav className="hidden lg:flex items-center gap-8">
-            <a href="#about" className="text-sm font-medium text-[#A1AABD] hover:text-[#F5F7FB] transition-colors">
-              About
+            <Link href="/" className="relative text-sm font-medium text-white pb-1 group">
+              Home
+              <span className="absolute bottom-[-4px] left-0 right-0 h-[2px] bg-[#00D2FE] rounded-full" />
+            </Link>
+            <a href="#about" className="text-sm font-medium text-[#94A3B8] hover:text-white transition-colors">
+              Features
             </a>
-            <a href="#problem" className="text-sm font-medium text-[#A1AABD] hover:text-[#F5F7FB] transition-colors">
-              The Old Way
+            <a href="#problem" className="text-sm font-medium text-[#94A3B8] hover:text-white transition-colors">
+              How It Works
             </a>
-            <a href="#platform" className="text-sm font-medium text-[#A1AABD] hover:text-[#F5F7FB] transition-colors">
-              Platform
+            <a href="#simulator" className="text-sm font-medium text-[#94A3B8] hover:text-white transition-colors">
+              Pricing
             </a>
-            <a href="#agents" className="text-sm font-medium text-[#A1AABD] hover:text-[#F5F7FB] transition-colors">
-              AI Agents
-            </a>
-            <a href="#workflows" className="text-sm font-medium text-[#A1AABD] hover:text-[#F5F7FB] transition-colors">
-              Workflows
-            </a>
-            <a href="#simulator" className="text-sm font-medium text-[#A1AABD] hover:text-[#F5F7FB] transition-colors">
-              Simulator
-            </a>
-            <a href="#faq" className="text-sm font-medium text-[#A1AABD] hover:text-[#F5F7FB] transition-colors">
-              FAQ
+            <a href="#faq" className="text-sm font-medium text-[#94A3B8] hover:text-white transition-colors">
+              Contact
             </a>
           </nav>
 
-          {/* Zone 3: Login + Book A Demo CTA (Right, Vertically Centered) */}
-          <div className="hidden sm:flex items-center gap-6">
-            <Link href="/login" className="text-sm font-medium text-[#A1AABD] hover:text-[#F5F7FB] transition-colors">
-              Login
-            </Link>
-            
-            <Link href="/register">
-              <button className="saas-btn-primary">
-                Book A Demo
-              </button>
-            </Link>
+          {/* Right Button: Watch Demo Pill with Cyan Circular Play Icon */}
+          <div className="hidden sm:flex items-center gap-4">
+            <button
+              onClick={() => {
+                const el = document.getElementById('dashboard-preview');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="h-10 px-4 rounded-full border border-white/15 bg-transparent hover:border-[#00D2FE]/60 text-white text-xs sm:text-sm font-medium inline-flex items-center gap-2.5 transition-all group"
+            >
+              <span>Watch Demo</span>
+              <div className="w-5 h-5 rounded-full bg-[#00D2FE] flex items-center justify-center text-[#030712] transition-transform group-hover:scale-105">
+                <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-current ml-0.5">
+                  <polygon points="6 4 20 12 6 20 6 4" />
+                </svg>
+              </div>
+            </button>
           </div>
 
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2.5 text-[#A1AABD] hover:text-[#F5F7FB] focus:outline-none"
+            className="lg:hidden p-2.5 text-[#94A3B8] hover:text-white focus:outline-none"
             aria-label="Toggle navigation menu"
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? <X className="w-5 h-5 text-[#F5F7FB]" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5" />}
           </button>
 
         </div>
@@ -194,38 +173,27 @@ export default function LandingPage() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-[#0D111B] border-b border-white/[0.08] px-6 py-5 flex flex-col space-y-3.5"
+              className="lg:hidden bg-[#070D18] border-b border-white/[0.08] px-6 py-5 flex flex-col space-y-3.5 shadow-2xl"
             >
-              <a href="#about" onClick={() => setMobileMenuOpen(false)} className="text-sm text-[#A1AABD] hover:text-white py-1">
-                About
+              <Link href="/" onClick={() => setMobileMenuOpen(false)} className="text-sm text-white font-medium py-1">
+                Home
+              </Link>
+              <a href="#about" onClick={() => setMobileMenuOpen(false)} className="text-sm text-[#94A3B8] hover:text-white py-1">
+                Features
               </a>
-              <a href="#problem" onClick={() => setMobileMenuOpen(false)} className="text-sm text-[#A1AABD] hover:text-white py-1">
-                The Old Way
+              <a href="#problem" onClick={() => setMobileMenuOpen(false)} className="text-sm text-[#94A3B8] hover:text-white py-1">
+                How It Works
               </a>
-              <a href="#platform" onClick={() => setMobileMenuOpen(false)} className="text-sm text-[#A1AABD] hover:text-white py-1">
-                Platform
+              <a href="#simulator" onClick={() => setMobileMenuOpen(false)} className="text-sm text-[#94A3B8] hover:text-white py-1">
+                Pricing
               </a>
-              <a href="#agents" onClick={() => setMobileMenuOpen(false)} className="text-sm text-[#A1AABD] hover:text-white py-1">
-                AI Agents
-              </a>
-              <a href="#workflows" onClick={() => setMobileMenuOpen(false)} className="text-sm text-[#A1AABD] hover:text-white py-1">
-                Workflows
-              </a>
-              <a href="#simulator" onClick={() => setMobileMenuOpen(false)} className="text-sm text-[#A1AABD] hover:text-white py-1">
-                Simulator
-              </a>
-              <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="text-sm text-[#A1AABD] hover:text-white py-1">
-                FAQ
+              <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="text-sm text-[#94A3B8] hover:text-white py-1">
+                Contact
               </a>
               <div className="pt-3 flex flex-col gap-2.5 border-t border-white/[0.08]">
-                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
-                  <button className="w-full saas-btn-ghost">
-                    Login
-                  </button>
-                </Link>
                 <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
-                  <button className="w-full saas-btn-primary">
-                    Book A Demo
+                  <button className="w-full h-11 rounded-xl bg-[#00D2FE] text-[#030712] text-xs font-semibold">
+                    Get Started Free
                   </button>
                 </Link>
               </div>
@@ -234,205 +202,273 @@ export default function LandingPage() {
         </AnimatePresence>
       </header>
 
-      {/* ─── 2. HERO SECTION ─────────────────────────────────────────── */}
-      <section className="w-full pt-24 pb-20 text-center">
+      {/* ─── 2. HERO SECTION (Centered Headline, Higher Dashboard Preview) ── */}
+      <section className="w-full pt-12 sm:pt-16 pb-16 text-center relative">
         <div className="site-container flex flex-col items-center">
           
-          {/* Eyebrow Label (Plain Text Only, 13px, Cyan, Tracking 0.08em) */}
-          <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#35C9F5] mb-6">
-            DECISION INTELLIGENCE PLATFORM
+          {/* Eyebrow Label: ✦ AI-Powered Business Intelligence */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#00D2FE]/10 border border-[#00D2FE]/30 text-xs sm:text-sm font-medium text-white mb-6 backdrop-blur-sm shadow-[0_0_20px_rgba(0,210,254,0.15)]">
+            <span className="text-[#00D2FE] text-base leading-none">✦</span>
+            <span>AI-Powered Business Intelligence</span>
           </div>
 
-          {/* Primary Headline (Line-height 1.05, Max 14ch per line, Breaks Cleanly) */}
-          <h1 className="text-[clamp(40px,6vw,72px)] font-bold text-[#F5F7FB] leading-[1.05] tracking-[-0.02em] max-w-[700px] mx-auto text-center [text-wrap:balance] mb-6">
-            Know the Impact Before You Decide.
+          {/* Primary Headline: Know the Impact / Before You Decide */}
+          <h1 className="text-[clamp(42px,6vw,76px)] font-bold text-white leading-[1.08] tracking-[-0.02em] max-w-[850px] mx-auto text-center [text-wrap:balance] mb-5">
+            Know the Impact<br />Before You Decide
           </h1>
 
-          {/* Supporting Paragraph (17-18px, Line-height 1.6, Muted Color) */}
-          <p className="text-[17px] sm:text-[18px] text-[#A1AABD] max-w-[640px] mx-auto text-center leading-[1.6] [text-wrap:pretty] mb-10">
-            Turn business data into actionable forecasts, scenario simulations, and
-            insights that help you make smarter decisions with confidence.
+          {/* Supporting Paragraph */}
+          <p className="text-[16px] sm:text-[17px] text-[#94A3B8] max-w-[620px] mx-auto text-center leading-[1.6] [text-wrap:pretty] mb-8">
+            BusinessPulseAI creates a digital twin of your business, predicts the impact of your decisions, and helps you grow with confidence.
           </p>
 
-          {/* CTA Buttons (Side by Side, 12px gap, 80px above dashboard) */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-20">
+          {/* Hero CTA Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14">
             <Link href="/register">
-              <button className="saas-btn-primary flex items-center justify-center gap-2">
-                Book A Demo
+              <button className="h-12 px-6 rounded-xl bg-[#00D2FE] hover:bg-[#38E1FF] text-[#030712] font-semibold text-sm inline-flex items-center justify-center gap-2 transition-all shadow-[0_0_30px_rgba(0,210,254,0.35)] hover:shadow-[0_0_40px_rgba(0,210,254,0.55)]">
+                Get Started Free
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
               </button>
             </Link>
 
-            <Link href="/simulator">
-              <button className="saas-btn-ghost flex items-center justify-center gap-2">
-                Explore Simulator
-              </button>
-            </Link>
+            <button 
+              onClick={() => {
+                const el = document.getElementById('dashboard-preview');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="h-12 px-5 rounded-xl bg-[#0A1220]/80 hover:bg-[#0E1A2E] border border-white/10 hover:border-white/20 text-white font-medium text-sm inline-flex items-center justify-center gap-3 transition-all backdrop-blur-sm"
+            >
+              <div className="w-5 h-5 rounded-full bg-[#00D2FE] flex items-center justify-center text-[#030712]">
+                <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-current ml-0.5">
+                  <polygon points="6 4 20 12 6 20 6 4" />
+                </svg>
+              </div>
+              <span>Watch Demo</span>
+            </button>
           </div>
 
-          {/* Surface #1: Dashboard Preview Mockup (Max-width 1040px, 24-32px Padding, Hairline Border) */}
-          <div className="w-full max-w-[1040px] mx-auto rounded-xl bg-[#0E131F] border border-white/[0.08] p-6 sm:p-8 text-left relative">
-            
-            {/* 1. Header Row (Welcome Left, System State Right) */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-8 border-b border-white/[0.08]">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-semibold text-[#F5F7FB] tracking-tight">
-                  Welcome back, <span className="text-[#35C9F5]">John Doe</span>
-                </h2>
-                <p className="text-[13px] text-[#A1AABD] mt-1">
-                  Automation & Decision Score: 92/100
-                </p>
-              </div>
-
-              {/* System State Telemetry (Plain Inline, No Box) */}
-              <div className="flex items-center gap-3">
-                <div className="relative w-8 h-8 flex items-center justify-center">
-                  <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                    <circle cx="18" cy="18" r="15" className="text-white/[0.08]" strokeWidth="3" stroke="currentColor" fill="none" />
-                    <circle cx="18" cy="18" r="15" className="text-[#34D399]" strokeWidth="3" strokeDasharray="94.2" strokeDashoffset="7.5" strokeLinecap="round" stroke="currentColor" fill="none" />
-                  </svg>
-                  <span className="absolute text-[11px] font-bold text-[#F5F7FB] font-mono">92%</span>
-                </div>
-                <div>
-                  <div className="text-[12px] text-[#6F7B90] uppercase font-mono tracking-wider">System State</div>
-                  <div className="text-[13px] font-medium text-[#34D399] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#34D399] animate-pulse" />
-                    Optimal Telemetry
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 2. Four KPIs in One Row Separated by Hairlines (No Cards, No Icon Tiles) */}
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.08] items-stretch">
-              <div className="py-4 sm:py-0 px-6 first:pl-0 last:pr-0 flex flex-col justify-between">
-                <span className="text-[13px] text-[#A1AABD] block leading-tight">Tasks Automated</span>
-                <div className="text-2xl sm:text-3xl font-bold text-[#F5F7FB] font-mono mt-2 tabular-nums">1,248</div>
-                <span className="text-[13px] text-[#34D399] font-medium font-mono mt-2">+12% this week</span>
-              </div>
-
-              <div className="py-4 sm:py-0 px-6 first:pl-0 last:pr-0 flex flex-col justify-between">
-                <span className="text-[13px] text-[#A1AABD] block leading-tight">Time Saved</span>
-                <div className="text-2xl sm:text-3xl font-bold text-[#F5F7FB] font-mono mt-2 tabular-nums">342 hrs</div>
-                <span className="text-[13px] text-[#34D399] font-medium font-mono mt-2">≈ ₹8,550 saved</span>
-              </div>
-
-              <div className="py-4 sm:py-0 px-6 first:pl-0 last:pr-0 flex flex-col justify-between">
-                <span className="text-[13px] text-[#A1AABD] block leading-tight">Forecast Accuracy</span>
-                <div className="text-2xl sm:text-3xl font-bold text-[#F5F7FB] font-mono mt-2 tabular-nums">99.7%</div>
-                <span className="text-[13px] text-[#35C9F5] font-medium font-mono mt-2">▲ 0.2% variance</span>
-              </div>
-
-              <div className="py-4 sm:py-0 px-6 first:pl-0 last:pr-0 flex flex-col justify-between">
-                <span className="text-[13px] text-[#A1AABD] block leading-tight">Active AI Agents</span>
-                <div className="text-2xl sm:text-3xl font-bold text-[#F5F7FB] font-mono mt-2 tabular-nums">47</div>
-                <span className="text-[13px] text-[#34D399] font-medium font-mono mt-2">+3 deployed</span>
-              </div>
-            </div>
-
-            {/* 3. Lower Row: Chart (~2fr) & Recent Agent Activity (~1fr), 48px gap */}
-            <div className="mt-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
+          {/* ─── DASHBOARD MOCKUP (Moved Higher, Shows 4 KPI Cards, Graphs Removed) ─── */}
+          <div 
+            id="dashboard-preview"
+            className="w-full max-w-[1100px] mx-auto rounded-2xl bg-[#060B13] border border-[#00D2FE]/45 shadow-[0_0_70px_-10px_rgba(0,210,254,0.32)] relative overflow-hidden text-left"
+          >
+            {/* Top Bar Header */}
+            <div className="h-16 px-5 sm:px-6 border-b border-[#1E293B]/60 bg-[#060B13] flex items-center justify-between gap-4">
               
-              {/* Left: Performance Telemetry Area Chart (~2fr) */}
-              <div className="lg:col-span-7 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-baseline gap-2">
-                      <h3 className="text-lg font-semibold text-[#F5F7FB] leading-snug">Automation Activity</h3>
-                      <span className="text-[13px] text-[#6F7B90]">(Last 7 Days)</span>
-                    </div>
-
-                    {/* Chart Tabs: Plain Text with Active Underlined */}
-                    <div className="flex items-center gap-4">
-                      {(['Daily', 'Weekly', 'Monthly'] as const).map((range) => (
-                        <button
-                          key={range}
-                          onClick={() => setActivityRange(range)}
-                          className={`text-[13px] font-medium transition-colors pb-1 ${
-                            activityRange === range
-                              ? 'text-[#35C9F5] border-b-2 border-[#35C9F5]'
-                              : 'text-[#A1AABD] hover:text-white border-b-2 border-transparent'
-                          }`}
-                        >
-                          {range}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="w-full h-48 sm:h-52">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={currentChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                        <defs>
-                          <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#35C9F5" stopOpacity={0.25} />
-                            <stop offset="95%" stopColor="#35C9F5" stopOpacity={0.0} />
-                          </linearGradient>
-                        </defs>
-                        <XAxis dataKey="name" stroke="#6F7B90" fontSize={11} tickLine={false} axisLine={{ stroke: 'rgba(255,255,255,0.08)' }} />
-                        <YAxis stroke="#6F7B90" fontSize={11} tickLine={false} axisLine={false} />
-                        <Tooltip
-                          contentStyle={{
-                            backgroundColor: '#0E131F',
-                            borderColor: 'rgba(255,255,255,0.12)',
-                            borderRadius: '8px',
-                            fontSize: '12px',
-                            color: '#F5F7FB',
-                          }}
-                        />
-                        <Area type="monotone" dataKey="tasks" stroke="#35C9F5" strokeWidth={1.5} fillOpacity={1} fill="url(#chartGradient)" />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
+              {/* Left: Dashboard Brand Logo */}
+              <div className="flex items-center gap-2.5 flex-shrink-0">
+                <div className="flex items-end gap-[3px] h-5">
+                  <span className="w-1 h-2 rounded-[1px] bg-[#00D2FE]" />
+                  <span className="w-1 h-3 rounded-[1px] bg-[#00D2FE]" />
+                  <span className="w-1 h-4 rounded-[1px] bg-[#00D2FE]" />
+                  <span className="w-1 h-5 rounded-[1px] bg-[#00D2FE]" />
                 </div>
+                <span className="text-base font-bold tracking-tight text-white hidden sm:inline">
+                  Business<span className="text-[#00D2FE]">PulseAI</span>
+                </span>
+              </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-white/[0.08] text-[13px] text-[#A1AABD] mt-4">
-                  <span>Peak throughput: 590 events/hr</span>
-                  <span className="text-[#35C9F5] font-medium">99.98% runtime reliability</span>
+              {/* Center: Search Bar */}
+              <div className="relative w-full max-w-[320px] md:max-w-[380px] hidden sm:block">
+                <Search className="w-4 h-4 text-[#94A3B8] absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  readOnly
+                  placeholder="Search for insights, reports..."
+                  className="w-full h-9 bg-[#0B1322] border border-[#1E293B]/60 rounded-lg pl-9 pr-3 text-xs text-gray-300 placeholder:text-gray-500 focus:outline-none cursor-default"
+                />
+              </div>
+
+              {/* Right: Notifications & Profile */}
+              <div className="flex items-center gap-4 flex-shrink-0">
+                <button className="text-[#94A3B8] hover:text-white transition-colors p-1" aria-label="Notifications">
+                  <Bell className="w-4 h-4" />
+                </button>
+
+                <div className="flex items-center gap-2.5 pl-2 border-l border-[#1E293B]/60">
+                  <div className="w-8 h-8 rounded-full overflow-hidden border border-[#00D2FE]/40 relative bg-[#1E293B]">
+                    <Image
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
+                      alt="Sanyam Mehta"
+                      width={32}
+                      height={32}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="hidden md:block text-left">
+                    <span className="text-xs font-semibold text-white block leading-tight">Sanyam Mehta</span>
+                    <span className="text-[10px] text-gray-400 block leading-tight">Business Owner</span>
+                  </div>
+                  <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
                 </div>
               </div>
 
-              {/* Right: Recent Agent Activity List (~1fr) */}
-              <div className="lg:col-span-5 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-[#F5F7FB] leading-snug">Recent Agent Activity</h3>
-                    <Link href="/simulator" className="text-xs text-[#35C9F5] hover:underline flex items-center gap-1 font-medium">
-                      View All <ExternalLink className="w-3 h-3" />
-                    </Link>
+            </div>
+
+            {/* Dashboard Inner Body: Left Sidebar + Right 4-KPI Content */}
+            <div className="flex">
+              
+              {/* Left Sidebar */}
+              <aside className="hidden md:flex flex-col justify-between w-48 lg:w-52 border-r border-[#1E293B]/60 bg-[#060B13] p-3 space-y-1 flex-shrink-0">
+                <div className="space-y-1">
+                  <div className="bg-[#00D2FE] text-[#030712] font-semibold text-xs rounded-lg px-3 py-2 flex items-center gap-2.5 shadow-sm cursor-pointer">
+                    <Home className="w-4 h-4 fill-current" />
+                    <span>Dashboard</span>
+                  </div>
+                  <div className="text-[#94A3B8] hover:text-white hover:bg-white/5 font-medium text-xs rounded-lg px-3 py-2 flex items-center gap-2.5 transition-colors cursor-pointer">
+                    <BarChart2 className="w-4 h-4" />
+                    <span>Analytics</span>
+                  </div>
+                  <div className="text-[#94A3B8] hover:text-white hover:bg-white/5 font-medium text-xs rounded-lg px-3 py-2 flex items-center gap-2.5 transition-colors cursor-pointer">
+                    <Zap className="w-4 h-4" />
+                    <span>Decision Simulator</span>
+                  </div>
+                  <div className="text-[#94A3B8] hover:text-white hover:bg-white/5 font-medium text-xs rounded-lg px-3 py-2 flex items-center gap-2.5 transition-colors cursor-pointer">
+                    <TrendingUp className="w-4 h-4" />
+                    <span>Sales</span>
+                  </div>
+                  <div className="text-[#94A3B8] hover:text-white hover:bg-white/5 font-medium text-xs rounded-lg px-3 py-2 flex items-center gap-2.5 transition-colors cursor-pointer">
+                    <CreditCard className="w-4 h-4" />
+                    <span>Expenses</span>
+                  </div>
+                  <div className="text-[#94A3B8] hover:text-white hover:bg-white/5 font-medium text-xs rounded-lg px-3 py-2 flex items-center gap-2.5 transition-colors cursor-pointer">
+                    <Package className="w-4 h-4" />
+                    <span>Products</span>
+                  </div>
+                  <div className="text-[#94A3B8] hover:text-white hover:bg-white/5 font-medium text-xs rounded-lg px-3 py-2 flex items-center gap-2.5 transition-colors cursor-pointer">
+                    <Database className="w-4 h-4" />
+                    <span>Inventory</span>
+                  </div>
+                  <div className="text-[#94A3B8] hover:text-white hover:bg-white/5 font-medium text-xs rounded-lg px-3 py-2 flex items-center gap-2.5 transition-colors cursor-pointer">
+                    <Users className="w-4 h-4" />
+                    <span>Employees</span>
+                  </div>
+                </div>
+              </aside>
+
+              {/* Main Content: Greeting + 4 KPI Cards (Graphs Removed) */}
+              <div className="flex-1 p-5 sm:p-6 bg-[#070D18]">
+                
+                {/* Greeting Row + Date Picker */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5">
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                      Welcome Back, Sanyam
+                    </h2>
+                    <p className="text-xs text-[#94A3B8] mt-0.5">
+                      Here&apos;s your business performance overview.
+                    </p>
                   </div>
 
-                  <div className="divide-y divide-white/[0.08]">
-                    {[
-                      { bot: 'Support Copilot', task: 'Ticket Escalation', status: 'Completed', time: '2m ago', color: 'text-[#34D399] bg-[#34D399]' },
-                      { bot: 'Sales Agent', task: 'Lead Qualification', status: 'Running', time: '8m ago', color: 'text-[#35C9F5] bg-[#35C9F5]' },
-                      { bot: 'Finance Agent', task: 'Invoice Reconcile', status: 'Completed', time: '24m ago', color: 'text-[#34D399] bg-[#34D399]' },
-                      { bot: 'Inventory Bot', task: 'Stock Level Forecast', status: 'Pending', time: '45m ago', color: 'text-[#FBBF24] bg-[#FBBF24]' },
-                    ].map((row, idx) => (
-                      <div key={idx} className="py-3.5 flex items-center justify-between text-xs">
-                        <div>
-                          <span className="font-semibold text-sm text-[#F5F7FB] block leading-tight">{row.bot}</span>
-                          <span className="text-[13px] text-[#6F7B90] mt-0.5 block">{row.task}</span>
-                        </div>
+                  {/* Date Filter Dropdown */}
+                  <div className="bg-[#0B1322] border border-[#1E293B]/60 rounded-lg px-3 py-1.5 text-xs text-gray-300 flex items-center gap-2 self-start sm:self-auto cursor-pointer">
+                    <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                    <span>Jun 2025 - Jun 2026</span>
+                    <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+                  </div>
+                </div>
 
-                        <div className="flex items-center gap-3">
-                          <span className="inline-flex items-center gap-1.5 text-xs font-medium">
-                            <span className={`w-1.5 h-1.5 rounded-full ${row.color}`} />
-                            <span className={row.color.split(' ')[0]}>{row.status}</span>
-                          </span>
-                          <span className="text-[13px] text-[#6F7B90] font-mono hidden sm:inline">{row.time}</span>
+                {/* The 4 KPI Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  
+                  {/* Card 1: Total Revenue */}
+                  <div className="bg-[#0A101D] border border-[#1E293B]/70 rounded-xl p-4 flex flex-col justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-[#00D2FE]/15 border border-[#00D2FE]/25 flex items-center justify-center text-[#00D2FE] flex-shrink-0">
+                        <BarChart2 className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="text-[11px] text-[#94A3B8] block leading-tight">Total Revenue</span>
+                        <div className="text-xl sm:text-2xl font-bold text-white font-mono mt-0.5 tabular-nums">
+                          ₹12.5L
                         </div>
                       </div>
-                    ))}
+                    </div>
+                    <div className="mt-3 text-[11px] font-mono flex items-center gap-1.5">
+                      <span className="text-[#34D399] font-medium flex items-center">↑ 12.5%</span>
+                      <span className="text-gray-400">this month</span>
+                    </div>
                   </div>
-                </div>
 
-                <div className="mt-6">
-                  <Link href="/simulator">
-                    <button className="w-full saas-btn-ghost">
-                      Launch Autonomous Agent →
-                    </button>
-                  </Link>
+                  {/* Card 2: Net Profit */}
+                  <div className="bg-[#0A101D] border border-[#1E293B]/70 rounded-xl p-4 flex flex-col justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-[#00D2FE]/15 border border-[#00D2FE]/25 flex items-center justify-center text-[#00D2FE] flex-shrink-0">
+                        <Coins className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="text-[11px] text-[#94A3B8] block leading-tight">Net Profit</span>
+                        <div className="text-xl sm:text-2xl font-bold text-white font-mono mt-0.5 tabular-nums">
+                          ₹3.2L
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-3 text-[11px] font-mono flex items-center gap-1.5">
+                      <span className="text-[#34D399] font-medium flex items-center">↑ 8.2%</span>
+                      <span className="text-gray-400">this month</span>
+                    </div>
+                  </div>
+
+                  {/* Card 3: Operating Expenses */}
+                  <div className="bg-[#0A101D] border border-[#1E293B]/70 rounded-xl p-4 flex flex-col justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-indigo-500/15 border border-indigo-500/25 flex items-center justify-center text-indigo-400 flex-shrink-0">
+                        <CreditCard className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <span className="text-[11px] text-[#94A3B8] block leading-tight">Operating Expenses</span>
+                        <div className="text-xl sm:text-2xl font-bold text-white font-mono mt-0.5 tabular-nums">
+                          ₹8.4L
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-3 text-[11px] font-mono flex items-center gap-1.5">
+                      <span className="text-[#FB7185] font-medium flex items-center">↓ 3.1%</span>
+                      <span className="text-gray-400">this month</span>
+                    </div>
+                  </div>
+
+                  {/* Card 4: Business Health */}
+                  <div className="bg-[#0A101D] border border-[#1E293B]/70 rounded-xl p-4 flex items-center justify-between">
+                    <div>
+                      <div className="w-9 h-9 rounded-lg bg-[#00D2FE]/15 border border-[#00D2FE]/25 flex items-center justify-center text-[#00D2FE] mb-2">
+                        <HeartPulse className="w-4 h-4" />
+                      </div>
+                      <span className="text-[11px] text-[#94A3B8] block leading-tight">Business Health</span>
+                      <div className="text-xl sm:text-2xl font-bold text-white font-mono mt-0.5 tabular-nums">
+                        82<span className="text-xs text-gray-400 font-normal">/100</span>
+                      </div>
+                    </div>
+
+                    {/* Circular Ring Gauge: 82% */}
+                    <div className="relative w-14 h-14 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="15"
+                          className="text-[#1E293B]"
+                          strokeWidth="3.5"
+                          stroke="currentColor"
+                          fill="none"
+                        />
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="15"
+                          className="text-[#00D2FE]"
+                          strokeWidth="3.5"
+                          strokeDasharray="94.2"
+                          strokeDashoffset="17.0"
+                          strokeLinecap="round"
+                          stroke="currentColor"
+                          fill="none"
+                        />
+                      </svg>
+                      <span className="absolute text-xs font-bold text-white font-mono">82%</span>
+                    </div>
+                  </div>
+
                 </div>
 
               </div>
@@ -448,9 +484,9 @@ export default function LandingPage() {
       <section id="about" className="section-wrapper">
         <div className="site-container">
           
-          {/* Centered Header Block: Eyebrow, 16px, H2, 16px, Subtext, 56px */}
+          {/* Centered Header Block */}
           <div className="flex flex-col items-center text-center mb-14">
-            <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#35C9F5] mb-4">
+            <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#00D2FE] mb-4">
               ABOUT BUSINESSPULSE
             </div>
             <h2 className="text-[clamp(28px,4vw,44px)] font-semibold text-[#F5F7FB] leading-[1.12] tracking-[-0.02em] max-w-[720px] mx-auto text-center [text-wrap:balance] mb-4">
@@ -461,7 +497,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* 3 Stats as ONE Row with Vertical Hairlines (No Cards) */}
+          {/* 3 Stats as ONE Row with Vertical Hairlines */}
           <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/[0.08] items-stretch">
             <div className="px-8 first:pl-0 last:pr-0 py-6 md:py-0 flex flex-col justify-between">
               <div>
@@ -518,7 +554,7 @@ export default function LandingPage() {
             {/* Left (7 cols): Header Block + 4 Plain Rows */}
             <div className="lg:col-span-7">
               <div>
-                <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#35C9F5] mb-4">
+                <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#00D2FE] mb-4">
                   THE OLD WAY
                 </div>
                 <h2 className="text-[clamp(28px,4vw,44px)] font-semibold text-[#F5F7FB] leading-[1.12] tracking-[-0.02em] [text-wrap:balance] mb-4">
@@ -558,14 +594,14 @@ export default function LandingPage() {
             <div className="lg:col-span-5 flex justify-center">
               <div className="aspect-square w-full max-w-[400px] mx-auto relative flex items-center justify-center rounded-full border border-white/[0.08] bg-[#0E131F]">
                 <div className="absolute inset-8 rounded-full border border-white/[0.06]" />
-                <div className="absolute inset-16 rounded-full border border-[#35C9F5]/15" />
+                <div className="absolute inset-16 rounded-full border border-[#00D2FE]/15" />
                 
                 {/* Rotating Sweep Beam */}
                 <div className="absolute inset-0 rounded-full animate-radar-spin pointer-events-none">
-                  <div className="w-1/2 h-full bg-gradient-to-r from-transparent via-[#35C9F5]/10 to-[#35C9F5]/20 rounded-l-full" />
+                  <div className="w-1/2 h-full bg-gradient-to-r from-transparent via-[#00D2FE]/10 to-[#00D2FE]/20 rounded-l-full" />
                 </div>
 
-                <div className="z-10 flex items-center justify-center text-[#35C9F5]">
+                <div className="z-10 flex items-center justify-center text-[#00D2FE]">
                   <Zap className="w-6 h-6 fill-current" />
                 </div>
 
@@ -576,7 +612,7 @@ export default function LandingPage() {
                 </div>
 
                 <div className="absolute bottom-[12%] left-[8%] z-20 text-[12px] font-mono text-[#A1AABD] flex items-center gap-1.5">
-                  <Activity className="w-3.5 h-3.5 text-[#35C9F5]" />
+                  <Activity className="w-3.5 h-3.5 text-[#00D2FE]" />
                   94% EFFICIENCY
                 </div>
               </div>
@@ -591,9 +627,9 @@ export default function LandingPage() {
       <section id="platform" className="section-wrapper">
         <div className="site-container">
           
-          {/* Centered Header Block: Eyebrow, 16px, H2, 16px, Subtext, 56px */}
+          {/* Centered Header Block */}
           <div className="flex flex-col items-center text-center mb-14">
-            <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#35C9F5] mb-4">
+            <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#00D2FE] mb-4">
               PLATFORM
             </div>
             <h2 className="text-[clamp(28px,4vw,44px)] font-semibold text-[#F5F7FB] leading-[1.12] tracking-[-0.02em] max-w-[720px] mx-auto text-center [text-wrap:balance] mb-4">
@@ -604,7 +640,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* ONE Row of 6 Integrations (No Tile Borders, Plain Stroke Icons) */}
+          {/* ONE Row of 6 Integrations */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 text-center items-center">
             {[
               { name: 'Notion', desc: 'SOPs & Docs', icon: FileText },
@@ -617,7 +653,7 @@ export default function LandingPage() {
               const IconComponent = app.icon;
               return (
                 <div key={app.name} className="flex flex-col items-center justify-center">
-                  <IconComponent className="w-5 h-5 text-[#35C9F5]" strokeWidth={1.75} />
+                  <IconComponent className="w-5 h-5 text-[#00D2FE]" strokeWidth={1.75} />
                   <span className="text-[15px] font-semibold text-[#F5F7FB] block mt-3">{app.name}</span>
                   <span className="text-[13px] text-[#A1AABD] mt-1">{app.desc}</span>
                 </div>
@@ -632,9 +668,9 @@ export default function LandingPage() {
       <section id="agents" className="section-wrapper">
         <div className="site-container">
           
-          {/* Centered Header Block: Eyebrow, 16px, H2, 16px, Subtext, 56px */}
+          {/* Centered Header Block */}
           <div className="flex flex-col items-center text-center mb-14">
-            <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#35C9F5] mb-4">
+            <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#00D2FE] mb-4">
               AI AGENTS
             </div>
             <h2 className="text-[clamp(28px,4vw,44px)] font-semibold text-[#F5F7FB] leading-[1.12] tracking-[-0.02em] max-w-[720px] mx-auto text-center [text-wrap:balance] mb-4">
@@ -645,7 +681,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          {/* 2x2 Grid of Equal-Height Agents (Hairline on Top, No Card Box) */}
+          {/* 2x2 Grid of Agents */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12 items-stretch">
             
             {/* Sales Agent */}
@@ -653,7 +689,7 @@ export default function LandingPage() {
               <div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <TrendingUp className="w-5 h-5 text-[#35C9F5]" strokeWidth={2} />
+                    <TrendingUp className="w-5 h-5 text-[#00D2FE]" strokeWidth={2} />
                     <h3 className="text-lg font-semibold text-[#F5F7FB]">Sales Agent</h3>
                   </div>
                   <span className="inline-flex items-center gap-1.5 text-xs text-[#34D399] font-medium">
@@ -672,7 +708,7 @@ export default function LandingPage() {
                   <span className="font-semibold text-[#F5F7FB] tabular-nums">94%</span>
                 </div>
                 <div className="w-full mt-2 h-0.5 bg-white/[0.08]">
-                  <div className="w-[94%] h-full bg-[#35C9F5]" />
+                  <div className="w-[94%] h-full bg-[#00D2FE]" />
                 </div>
               </div>
             </div>
@@ -682,7 +718,7 @@ export default function LandingPage() {
               <div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <MessageSquare className="w-5 h-5 text-[#35C9F5]" strokeWidth={2} />
+                    <MessageSquare className="w-5 h-5 text-[#00D2FE]" strokeWidth={2} />
                     <h3 className="text-lg font-semibold text-[#F5F7FB]">Support Agent</h3>
                   </div>
                   <span className="inline-flex items-center gap-1.5 text-xs text-[#34D399] font-medium">
@@ -701,7 +737,7 @@ export default function LandingPage() {
                   <span className="font-semibold text-[#F5F7FB] tabular-nums">88%</span>
                 </div>
                 <div className="w-full mt-2 h-0.5 bg-white/[0.08]">
-                  <div className="w-[88%] h-full bg-[#35C9F5]" />
+                  <div className="w-[88%] h-full bg-[#00D2FE]" />
                 </div>
               </div>
             </div>
@@ -711,7 +747,7 @@ export default function LandingPage() {
               <div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <Cpu className="w-5 h-5 text-[#35C9F5]" strokeWidth={2} />
+                    <Cpu className="w-5 h-5 text-[#00D2FE]" strokeWidth={2} />
                     <h3 className="text-lg font-semibold text-[#F5F7FB]">Operations Agent</h3>
                   </div>
                   <span className="inline-flex items-center gap-1.5 text-xs text-[#34D399] font-medium">
@@ -740,7 +776,7 @@ export default function LandingPage() {
               <div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <DollarSign className="w-5 h-5 text-[#35C9F5]" strokeWidth={2} />
+                    <DollarSign className="w-5 h-5 text-[#00D2FE]" strokeWidth={2} />
                     <h3 className="text-lg font-semibold text-[#F5F7FB]">Finance Agent</h3>
                   </div>
                   <span className="inline-flex items-center gap-1.5 text-xs text-[#34D399] font-medium">
@@ -759,7 +795,7 @@ export default function LandingPage() {
                   <span className="font-semibold text-[#F5F7FB] tabular-nums">96%</span>
                 </div>
                 <div className="w-full mt-2 h-0.5 bg-white/[0.08]">
-                  <div className="w-[96%] h-full bg-[#35C9F5]" />
+                  <div className="w-[96%] h-full bg-[#00D2FE]" />
                 </div>
               </div>
             </div>
@@ -773,10 +809,10 @@ export default function LandingPage() {
       <section id="workflows" className="section-wrapper">
         <div className="site-container">
           
-          {/* Header Row: Eyebrow + H2 on Left, Action Link on Right */}
+          {/* Header Row */}
           <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-14 gap-4">
             <div>
-              <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#35C9F5] mb-4">
+              <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#00D2FE] mb-4">
                 READY-TO-RUN WORKFLOWS
               </div>
               <h2 className="text-[clamp(24px,3.5vw,36px)] font-semibold text-[#F5F7FB] tracking-[-0.02em] [text-wrap:balance]">
@@ -784,12 +820,12 @@ export default function LandingPage() {
               </h2>
             </div>
 
-            <Link href="/simulator" className="text-sm font-semibold text-[#35C9F5] hover:underline flex items-center gap-1 flex-shrink-0">
+            <Link href="/simulator" className="text-sm font-semibold text-[#00D2FE] hover:underline flex items-center gap-1 flex-shrink-0">
               Explore all templates →
             </Link>
           </div>
 
-          {/* 3x2 Grid of Templates (Hairline on Top, No Card Borders) */}
+          {/* 3x2 Grid of Templates */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-14 items-stretch">
             {[
               { id: '001', title: 'Customer Onboarding', pipeline: 'Website → AI Agent → CRM → Slack' },
@@ -813,7 +849,7 @@ export default function LandingPage() {
                 </div>
 
                 <div className="mt-5">
-                  <Link href="/simulator" className="text-sm font-medium text-[#35C9F5] hover:underline inline-flex items-center gap-1">
+                  <Link href="/simulator" className="text-sm font-medium text-[#00D2FE] hover:underline inline-flex items-center gap-1">
                     Use template →
                   </Link>
                 </div>
@@ -828,9 +864,9 @@ export default function LandingPage() {
       <section id="simulator" className="section-wrapper">
         <div className="site-container">
           
-          {/* Centered Header Block: Eyebrow, 16px, H2, 16px, Subtext, 48px */}
+          {/* Centered Header Block */}
           <div className="flex flex-col items-center text-center mb-12">
-            <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#35C9F5] mb-4">
+            <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#00D2FE] mb-4">
               DECISION SIMULATOR
             </div>
             <h2 className="text-[clamp(28px,4vw,44px)] font-semibold text-[#F5F7FB] leading-[1.12] tracking-[-0.02em] max-w-[720px] mx-auto text-center [text-wrap:balance] mb-4">
@@ -847,7 +883,7 @@ export default function LandingPage() {
               onClick={() => setSelectedScenario('hire')}
               className={`text-sm transition-colors pb-3 -mb-3.5 ${
                 selectedScenario === 'hire'
-                  ? 'text-[#35C9F5] font-semibold border-b-2 border-[#35C9F5]'
+                  ? 'text-[#00D2FE] font-semibold border-b-2 border-[#00D2FE]'
                   : 'text-[#A1AABD] font-medium hover:text-white border-b-2 border-transparent'
               }`}
             >
@@ -857,7 +893,7 @@ export default function LandingPage() {
               onClick={() => setSelectedScenario('pricing')}
               className={`text-sm transition-colors pb-3 -mb-3.5 ${
                 selectedScenario === 'pricing'
-                  ? 'text-[#35C9F5] font-semibold border-b-2 border-[#35C9F5]'
+                  ? 'text-[#00D2FE] font-semibold border-b-2 border-[#00D2FE]'
                   : 'text-[#A1AABD] font-medium hover:text-white border-b-2 border-transparent'
               }`}
             >
@@ -867,7 +903,7 @@ export default function LandingPage() {
               onClick={() => setSelectedScenario('marketing')}
               className={`text-sm transition-colors pb-3 -mb-3.5 ${
                 selectedScenario === 'marketing'
-                  ? 'text-[#35C9F5] font-semibold border-b-2 border-[#35C9F5]'
+                  ? 'text-[#00D2FE] font-semibold border-b-2 border-[#00D2FE]'
                   : 'text-[#A1AABD] font-medium hover:text-white border-b-2 border-transparent'
               }`}
             >
@@ -875,7 +911,7 @@ export default function LandingPage() {
             </button>
           </div>
 
-          {/* Surface #2: Decision Simulator Panel (32-40px Padding, Hairline Border, Radius 12px) */}
+          {/* Decision Simulator Panel */}
           <div className="bg-[#0E131F] border border-white/[0.08] rounded-xl p-8 sm:p-10">
             
             {/* Top Hypothesis Row */}
@@ -897,7 +933,7 @@ export default function LandingPage() {
               </div>
             </div>
 
-            {/* 4 Metrics in One Row Separated by Hairlines (No Tiles) */}
+            {/* 4 Metrics in One Row Separated by Hairlines */}
             <div className="mt-10 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/[0.08] items-stretch">
               <div className="px-6 first:pl-0 last:pr-0 py-4 md:py-0 flex flex-col justify-between">
                 <span className="text-[13px] text-[#A1AABD] block">Projected Revenue</span>
@@ -922,7 +958,7 @@ export default function LandingPage() {
 
               <div className="px-6 first:pl-0 last:pr-0 py-4 md:py-0 flex flex-col justify-between">
                 <span className="text-[13px] text-[#A1AABD] block">Payback Period</span>
-                <div className="text-2xl sm:text-3xl font-bold text-[#35C9F5] mt-2 font-mono tabular-nums">
+                <div className="text-2xl sm:text-3xl font-bold text-[#00D2FE] mt-2 font-mono tabular-nums">
                   {scenarioData[selectedScenario].breakeven}
                 </div>
               </div>
@@ -952,9 +988,9 @@ export default function LandingPage() {
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
             
-            {/* Left Column (5 cols): Heading & Documentation CTA */}
+            {/* Left Column (5 cols) */}
             <div className="lg:col-span-5">
-              <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#35C9F5] mb-4">
+              <div className="text-[13px] font-medium uppercase tracking-[0.08em] text-[#00D2FE] mb-4">
                 FAQ
               </div>
               <h2 className="text-[clamp(28px,4vw,44px)] font-semibold text-[#F5F7FB] leading-[1.12] tracking-[-0.02em] [text-wrap:balance] mb-4">
@@ -964,13 +1000,13 @@ export default function LandingPage() {
                 Learn how our predictive models and cognitive agents safeguard capital and streamline daily workflows.
               </p>
               <div className="mt-8">
-                <Link href="/register" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#35C9F5] hover:underline">
+                <Link href="/register" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#00D2FE] hover:underline">
                   Explore documentation →
                 </Link>
               </div>
             </div>
 
-            {/* Right Column (7 cols): Accordion Rows with Hairlines */}
+            {/* Right Column (7 cols): Accordion Rows */}
             <div className="lg:col-span-7 divide-y divide-white/[0.08] border-t border-b border-white/[0.08]">
               {faqData.map((item, index) => {
                 const isOpen = activeFaq === index;
@@ -981,14 +1017,14 @@ export default function LandingPage() {
                       className="w-full flex items-center justify-between text-left group gap-4"
                       aria-expanded={isOpen}
                     >
-                      <span className="text-[17px] font-medium text-[#F5F7FB] group-hover:text-[#35C9F5] transition-colors pr-2">
+                      <span className="text-[17px] font-medium text-[#F5F7FB] group-hover:text-[#00D2FE] transition-colors pr-2">
                         {item.q}
                       </span>
                       <div className="w-6 h-6 flex items-center justify-center shrink-0">
                         {isOpen ? (
-                          <X className="w-4 h-4 text-[#35C9F5]" />
+                          <X className="w-4 h-4 text-[#00D2FE]" />
                         ) : (
-                          <Plus className="w-4 h-4 text-[#A1AABD] group-hover:text-[#35C9F5]" />
+                          <Plus className="w-4 h-4 text-[#A1AABD] group-hover:text-[#00D2FE]" />
                         )}
                       </div>
                     </button>
@@ -1018,7 +1054,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── 10. SECTION H: FINAL CTA (No Card Box, Centered) ─────────── */}
+      {/* ─── 10. SECTION H: FINAL CTA ─────────────────────────────────── */}
       <section className="section-wrapper">
         <div className="site-container">
           
@@ -1055,10 +1091,15 @@ export default function LandingPage() {
             
             {/* Brand Info (5 cols) */}
             <div className="md:col-span-5">
-              <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-[#35C9F5]" />
-                <span className="font-bold text-[#F5F7FB] text-base tracking-tight">
-                  BusinessPulse AI
+              <div className="flex items-center gap-2.5">
+                <div className="flex items-end gap-[3px] h-5">
+                  <span className="w-1 h-2 rounded-[1px] bg-[#00D2FE]" />
+                  <span className="w-1 h-3 rounded-[1px] bg-[#00D2FE]" />
+                  <span className="w-1 h-4 rounded-[1px] bg-[#00D2FE]" />
+                  <span className="w-1 h-5 rounded-[1px] bg-[#00D2FE]" />
+                </div>
+                <span className="font-bold text-white text-base tracking-tight">
+                  Business<span className="text-[#00D2FE]">PulseAI</span>
                 </span>
               </div>
               <p className="text-[14px] text-[#A1AABD] max-w-[36ch] leading-relaxed mt-4">
@@ -1104,9 +1145,9 @@ export default function LandingPage() {
 
           </div>
 
-          {/* Bottom Bar: Copyright (Left) & Legal Links (Right) */}
+          {/* Bottom Bar: Copyright & Legal */}
           <div className="mt-16 pt-6 border-t border-white/[0.08] flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px] text-[#6F7B90]">
-            <p>© 2026 BusinessPulse AI. All rights reserved.</p>
+            <p>© 2026 BusinessPulseAI. All rights reserved.</p>
             <div className="flex items-center gap-6">
               <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
               <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
